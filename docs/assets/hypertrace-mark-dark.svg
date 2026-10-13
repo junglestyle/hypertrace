@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Hypertrace">
+<defs><mask id="ht-holes" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="#fff"/><circle cx="22" cy="70" r="4.5" fill="#000"/><circle cx="44" cy="70" r="4.5" fill="#000"/><circle cx="96" cy="70" r="4.5" fill="#000"/></mask></defs>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" mask="url(#ht-holes)">
+<path d="M60 16L34 42M60 16L60 42M34 42L22 70M34 42L44 70M60 42L44 70M86 42L96 70" stroke="#E8E4DA" stroke-opacity="0.45" stroke-width="2.5"/>
+<path d="M60 42L60 62M96 70L100 86" stroke="#E8E4DA" stroke-opacity="0.45" stroke-width="2.5" stroke-dasharray="2 4"/>
+</g>
+<polyline points="60,16 86,42 72,70 60,98" fill="none" stroke="#8FD694" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="60" cy="16" r="5.5" fill="#E8E4DA"/>
+<circle cx="34" cy="42" r="4" fill="#E8E4DA"/>
+<circle cx="60" cy="42" r="4" fill="#E8E4DA"/>
+<circle cx="86" cy="42" r="4" fill="#E8E4DA"/>
+<circle cx="72" cy="70" r="4" fill="#E8E4DA"/>
+<circle cx="22" cy="70" r="4" fill="none" stroke="#E8E4DA" stroke-width="2"/>
+<circle cx="44" cy="70" r="4" fill="none" stroke="#E8E4DA" stroke-width="2"/>
+<circle cx="96" cy="70" r="4" fill="none" stroke="#E8E4DA" stroke-width="2"/>
+<rect x="53" y="91" width="14" height="14" rx="1.5" fill="#8FD694"/>
+</svg>

@@ -1,4 +1,11 @@
-[![tests](https://github.com/nathancurry/hypertrace/actions/workflows/test.yml/badge.svg)](https://github.com/nathancurry/hypertrace/actions/workflows/test.yml)
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/hypertrace-mark-dark.svg">
+    <img src="docs/assets/hypertrace-mark-light.svg" alt="Hypertrace" width="120">
+  </picture>
+</p>
+
+[![tests](https://github.com/junglestyle/hypertrace/actions/workflows/test.yml/badge.svg)](https://github.com/junglestyle/hypertrace/actions/workflows/test.yml)
 
 # Hypertrace
 
