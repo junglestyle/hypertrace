@@ -1,4 +1,4 @@
-<!-- junglestyle/.github code-standards/README.md at f65479ce5651ef35d3b9add793516217f8a8a456. Change it there, then run make sync-standards. -->
+<!-- junglestyle/.github code-standards/README.md at 326fdbfb5fe925b46d2313b3fa1aa61a640d4802. Change it there, then run make sync-standards. -->
 # Standards
 
 Each principle from [PRINCIPLES.md](https://github.com/junglestyle/.github/blob/main/PRINCIPLES.md) turned into rules you can check in review, arranged by where a reviewer looks. When they pull against each other, pick what works and is easiest to undo.
