@@ -1,9 +1,10 @@
 # Coding standards
 
-Hypertrace follows the [org standards](org-standards.md) and the org's [Python standards](org-standards-python.md),
-unchanged copies of [junglestyle's](https://github.com/junglestyle/.github/tree/main/code-standards). `.org-standards`
-lists the topics it copies beyond the general one. This file adds Hypertrace's own rules and examples. Where it differs
-from an org rule, it says so, and it wins.
+Hypertrace follows the [org standards](org-standards.md) and the org's standards for [Python](org-standards-python.md)
+and [SQL](org-standards-sql.md), unchanged copies of
+[junglestyle's](https://github.com/junglestyle/.github/tree/main/code-standards). `.org-standards` lists the topics it
+copies beyond the general one. This file adds Hypertrace's own rules and examples. Where it differs from an org rule, it
+says so, and it wins.
 
 ## Invariants
 
@@ -90,3 +91,8 @@ Where Hypertrace doesn't follow the org standards yet. These are debt to pay dow
   no ADR.
 - Structure: `Database.add_lead`, `has_pending_archive_retry` and `has_pending_search_retry` have no caller.
 - Privacy: `HYPERTRACE_MAX_CONSECUTIVE_TARGET_SEARCHES` isn't in [install.md](install.md).
+- SQL: seven `StrEnum` columns (`hypotheses.status`, `evidence.evidence_type` and others) have no `CHECK`, and five
+  `CHECK`ed sets (`research_notes.kind` and others) have no `StrEnum`.
+- SQL: `Database._migrate`'s `ALTER TABLE`s run before its transaction starts, so each commits on its own.
+- SQL: runs for different questions can open the database at once, but it isn't in WAL, and writes don't start with
+  `BEGIN IMMEDIATE`.
