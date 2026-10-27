@@ -46,14 +46,11 @@ The defaults for `ROUTER_MODEL` and `REVIEW_MODEL` are `RESEARCH_MODEL`. Review 
 
 `HYPERTRACE_REVIEW_ACTION_THRESHOLD` defaults to 25 meaningful actions between successful reviews. A new verified primary excerpt, contradiction, or source-target resolution can trigger an earlier review. A clean stop reviews unreviewed material evidence if at least two minutes and one action remain. `HYPERTRACE_REVIEW_QUERY_LIMIT` defaults to 3; review proposals must have high information value. `status` and `report` show the action count and persisted review trigger or skip reason.
 
+The [README](../README.md#a-run-end-to-end) walks through `run`, `status`, `evidence`, `hypotheses` and `report` with real output. The other flags and commands:
+
 ```sh
-uv run hypertrace run --max-actions 30 --max-minutes 20
 uv run hypertrace run --question-id 2 --max-actions 100 --max-cost 1.00 --model stronger-model
-uv run hypertrace status
 uv run hypertrace activate-query 123
-uv run hypertrace evidence
-uv run hypertrace hypotheses
-uv run hypertrace report --output report.md
 ```
 
 Use `--db PATH` before the subcommand or set `HYPERTRACE_DB`. A run stops at its configured action, elapsed-time, cost, or yield limit. Pending candidate pages and query records remain in the database for later runs. `HYPERTRACE_ACTIVE_QUERY_LIMIT` caps active searches (default 50); lower-priority leads remain deferred. `activate-query` reconsiders a deferred lead when the cap and priority allow it. `HYPERTRACE_MIN_YIELD` or `--min-yield` sets the minimum observed evidence per distinct assessed document after three such documents.
