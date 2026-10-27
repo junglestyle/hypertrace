@@ -1,4 +1,4 @@
-<!-- junglestyle/.github code-standards/python.md at 326fdbfb5fe925b46d2313b3fa1aa61a640d4802. Change it there, then run make sync-standards. -->
+<!-- junglestyle/.github code-standards/python.md at 2844d4ade90336f782d485d09dc2f8b984b99926. Change it there, then run make sync-standards. -->
 # Python standards
 
 Decisions for Python code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md). `ruff.toml` holds the mechanical rules; this file holds what a linter can't check.

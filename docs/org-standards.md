@@ -1,4 +1,4 @@
-<!-- junglestyle/.github code-standards/README.md at 326fdbfb5fe925b46d2313b3fa1aa61a640d4802. Change it there, then run make sync-standards. -->
+<!-- junglestyle/.github code-standards/README.md at 2844d4ade90336f782d485d09dc2f8b984b99926. Change it there, then run make sync-standards. -->
 # Standards
 
 Each principle from [PRINCIPLES.md](https://github.com/junglestyle/.github/blob/main/PRINCIPLES.md) turned into rules you can check in review, arranged by where a reviewer looks. When they pull against each other, pick what works and is easiest to undo.
@@ -62,13 +62,23 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 
 - Never commit hostnames, tokens, personal context, or deployment config. In docs, name roles, not machines: "the NAS" or "a GPU host".
 - Commit the shape of config, never its values. `.env.example` holds it unless the repo's standards name another place.
+- The values go in the project's deployment repo (see [Deployment repos](#deployment-repos)).
 
 ## Docs
 
 - The README says what the project is and how to run it, in that order.
 - Docs describe the behavior a user can observe (a default, a state name, an env var), so a reader never has to open the code to learn what the project does. They don't carry a second copy of the logic.
-- A deferred requirement gets a line in the spec or `docs/ROADMAP.md`, not a stub in code.
+- `docs/SPEC.md` says what the product is meant to do. `docs/ROADMAP.md` says the order it gets built in: slices, each usable on its own, each naming what a user would notice and a done-when someone can demonstrate. A slice names the spec requirements it delivers instead of restating them.
+- A deferred requirement stays in the spec and gets a later slice in the roadmap, not a stub in code.
 - A decision that's hard to undo gets an ADR in `docs/stack.md`.
+
+## Deployment repos
+
+Deployment facts go in a parallel private repo, `<name>-deployment`, kept in the deployer's personal GitHub account, not the org. It holds the values the public repo can't (addresses, scope, secrets, release pins) and the automation that applies them. The public repo's architecture names what it owns. These rules replace the general ones they name, and everything else applies as written.
+
+- **Privacy:** hostnames, addresses, and deployment config belong here, since holding them is its job. Secrets are committed only encrypted, and real scan output and user data never are.
+- **Docs:** it has no spec or roadmap. The public repo's spec says what it holds, and its roadmap orders the work. Its README says what it deploys, links the public repo's section naming what it owns, then covers first deploy, upgrades, and secrets. A decision about the deployment itself (hosts, hypervisor, layout) gets an ADR in its `docs/stack.md`. A decision about the product belongs in the public repo. It follows its public repo's `docs/standards.md` and keeps its own only for rules about the deployment itself.
+- **Running it:** its checks are the deployment tool's own, such as `ansible-playbook --syntax-check` and `--check --diff`. It needs no `make check`, no tests, and no copies of these standards.
 
 ## Prose
 

@@ -1,4 +1,4 @@
-<!-- junglestyle/.github code-standards/sql.md at 326fdbfb5fe925b46d2313b3fa1aa61a640d4802. Change it there, then run make sync-standards. -->
+<!-- junglestyle/.github code-standards/sql.md at 2844d4ade90336f782d485d09dc2f8b984b99926. Change it there, then run make sync-standards. -->
 # SQL standards
 
 Decisions for SQL and the databases that hold it, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md). In Python, [python.md](https://github.com/junglestyle/.github/blob/main/code-standards/python.md) also covers SQL: parameterized queries through `sqlite3` or psycopg 3, numbered `NNN_name.sql` migrations, and a scratch database for each test run.

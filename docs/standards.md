@@ -96,3 +96,6 @@ Where Hypertrace doesn't follow the org standards yet. These are debt to pay dow
 - SQL: `Database._migrate`'s `ALTER TABLE`s run before its transaction starts, so each commits on its own.
 - SQL: runs for different questions can open the database at once, but it isn't in WAL, and writes don't start with
   `BEGIN IMMEDIATE`.
+- Docs: there's no `docs/SPEC.md` or `docs/ROADMAP.md`. What Hypertrace is meant to do is spread across the
+  [README](../README.md) and [install.md](install.md), and install.md's "v1 backend" limits (paywalls, JavaScript-only
+  pages, book scans, archive-specific dating) have no slice saying whether a later version lifts them.
