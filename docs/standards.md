@@ -78,7 +78,6 @@ Where Hypertrace doesn't follow the org standards yet. These are debt to pay dow
 - Ruff: the line length is 100, not 110, and the rules are ruff's defaults, not the org `ruff.toml`'s (75 findings under
   it).
 - `make check` runs ruff and pytest. mypy isn't configured or run; `mypy --strict` reports 79 errors.
-- Layout: `hypertrace/__init__.py` sets `__version__`.
 - Data modeling: internal records (`ResearchQuestion`, `Hypothesis`, `Source`, `Evidence`, `ResearchRun` and others in
   `models.py`) are Pydantic models, not frozen dataclasses. Two dataclasses are mutable (`llm/base.py`, `research.py`).
 - Schema: an inline `SCHEMA` string and `Database._migrate`'s `ALTER TABLE`s, not numbered `NNN_name.sql` files.
