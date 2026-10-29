@@ -73,28 +73,50 @@ record is more important than convenience or model fluency.
 
 Where Hypertrace doesn't follow the org standards yet. These are debt to pay down, not overrides: each one should go.
 
-- Tooling: there's no `.python-version`; `requires-python` is `>=3.13`, and the tests pass on 3.15. The dev tools are an
-  extra, not a `dev` dependency group, and CI installs with `uv sync --extra dev`, not `uv sync --frozen`.
-- Ruff: the line length is 100, not 110, and the rules are ruff's defaults, not the org `ruff.toml`'s (75 findings under
-  it).
-- `make check` runs ruff and pytest. mypy isn't configured or run; `mypy --strict` reports 79 errors.
-- Data modeling: internal records (`ResearchQuestion`, `Hypothesis`, `Source`, `Evidence`, `ResearchRun` and others in
-  `models.py`) are Pydantic models, not frozen dataclasses. Two dataclasses are mutable (`llm/base.py`, `research.py`).
-- Schema: an inline `SCHEMA` string and `Database._migrate`'s `ALTER TABLE`s, not numbered `NNN_name.sql` files.
-- Errors: an operator error raises `ValueError` with a capitalized message ("Set LLM_API_KEY for research runs"), so it
-  ends in a traceback, not `SystemExit`.
-- Concurrency: the code is async (`httpx.AsyncClient`, one `asyncio.run`) without fanning out.
-- Testing: `test_core.py` isn't named for the behavior it covers.
-- Dependencies: `httpx` and `pydantic` are capped (`<1`, `<3`) without a comment naming the break.
 - Dependencies: there's no `docs/stack.md`, so the hard-to-undo choices (SQLite, Brave, an OpenAI-compatible API) have
   no ADR.
+- Versions and pins: `pyproject.toml` has no `[tool.uv] required-version`, so CI's `setup-uv`
+  (`.github/workflows/test.yml:12`) installs the newest uv.
 - Structure: `Database.add_lead`, `has_pending_archive_retry` and `has_pending_search_retry` have no caller.
 - Privacy: `HYPERTRACE_MAX_CONSECUTIVE_TARGET_SEARCHES` isn't in [install.md](install.md).
-- SQL: seven `StrEnum` columns (`hypotheses.status`, `evidence.evidence_type` and others) have no `CHECK`, and five
-  `CHECK`ed sets (`research_notes.kind` and others) have no `StrEnum`.
-- SQL: `Database._migrate`'s `ALTER TABLE`s run before its transaction starts, so each commits on its own.
-- SQL: runs for different questions can open the database at once, but it isn't in WAL, and writes don't start with
-  `BEGIN IMMEDIATE`.
+- Docs: the `target-sources` and `archive-target` commands (`cli.py:24-34`) aren't in the README or
+  [install.md](install.md), whose "other flags and commands" stop at `run` and `activate-query`.
 - Docs: there's no `docs/SPEC.md` or `docs/ROADMAP.md`. What Hypertrace is meant to do is spread across the
   [README](../README.md) and [install.md](install.md), and install.md's "v1 backend" limits (paywalls, JavaScript-only
   pages, book scans, archive-specific dating) have no slice saying whether a later version lifts them.
+- Tooling: there's no `.python-version`; `requires-python` is `>=3.13`, and the tests pass on 3.15. The dev tools are an
+  extra, not a `dev` dependency group, and CI installs with `uv sync --extra dev`, not `uv sync --frozen`.
+- Tooling: ruff's line length is 100, not 110, and the rules are ruff's defaults, not the org `ruff.toml`'s (75 findings
+  under it).
+- Tooling: `make check` runs ruff and pytest. mypy isn't configured or run; `mypy --strict` reports 79 errors.
+- Data modeling: internal records (`ResearchQuestion`, `Hypothesis`, `Source`, `Evidence`, `ResearchRun` and others in
+  `models.py`) are Pydantic models, not frozen dataclasses. Two dataclasses are mutable (`llm/base.py`, `research.py`).
+- Data modeling: closed sets the code compares or parses from model output have no `StrEnum`. `target_purpose`,
+  `queries.information_value` and `queries.admission_basis` are `Literal`s (`models.py:123,211-217`), and
+  `research_notes.kind`, `candidates.assessment_mode`, `target_search_progress.outcome`, `source_targets.status` and
+  `.dating_status`, `queries.status`, `runs.status` and `provider_attempts.provider_role` are plain strings the code
+  compares (`db.py:725,891,995-997,1621,2766`, `research.py:1208`, `reports.py:104`). No test asserts a `StrEnum`'s
+  values are its column's `CHECK` list.
+- Data modeling: the schema is an inline `SCHEMA` string and `Database._migrate`'s `ALTER TABLE`s, not numbered
+  `NNN_name.sql` files.
+- Errors: an operator error raises `ValueError` with a capitalized message ("Set LLM_API_KEY for research runs"), so it
+  ends in a traceback, not `SystemExit`.
+- Output and logging: `llm/openai_compatible.py:440` logs each completion attempt with `logger.info`, but nothing
+  configures a handler, so the line never reaches stderr.
+- Concurrency: the code is async (`httpx.AsyncClient`, one `asyncio.run`) without fanning out.
+- Testing: `test_core.py` isn't named for the behavior it covers.
+- Dependencies: `httpx` and `pydantic` are capped (`<1`, `<3`) without a comment naming the break.
+- SQL queries: `Database._migrate`'s `ALTER TABLE`s (`db.py:473`) run inside `with self.conn:` but before its first
+  `UPDATE` opens the transaction, so each commits on its own.
+- SQL queries: `hypertrace research` (`cli.py:125-133`) and `init` (`planner.py:142-162`) commit the question and each
+  hypothesis and query in its own transaction. After a crash, `init` finds the question and never adds the rest.
+- SQL schema: closed sets with no `CHECK`: the `StrEnum` columns `hypotheses.status`,
+  `hypothesis_suggestions.proposed_status`, `evidence.evidence_type`, `.quote_region`, `.term_sense` and `.confidence`,
+  `relationships.kind` and `leads.kind`; `target_purpose` on `queries`, `query_target_associations` and
+  `plan_query_rejections` (`db.py:97,148,157`), though its other three columns have one; `queries.information_value`,
+  `.admission_basis` and `.status`; and sets that live only as strings in code, such as `runs.status`,
+  `archive_lookups.status`, `source_targets.evidence_status` and `.dating_status`, `review_cadence_events.decision` and
+  `provider_attempts.provider_role`. A database made before `_migrate` added `candidates.assessment_mode` (`db.py:413`)
+  has no `CHECK` on it.
+- SQLite: runs for different questions can open the database at once, but it isn't in WAL, and writes don't start with
+  `BEGIN IMMEDIATE`.

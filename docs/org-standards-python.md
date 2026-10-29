@@ -1,4 +1,4 @@
-<!-- junglestyle/.github code-standards/python.md at b67e538f4a83e8ee7f11716801f1c3d0819be19d. Change it there, then run make sync-standards. -->
+<!-- junglestyle/.github code-standards/python.md at b3d3bb1eb1b997100738fb5bb9dd2a2b9f45a9d4. Change it there, then run make sync-standards. -->
 # Python standards
 
 Decisions for Python code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md). `ruff.toml` holds the mechanical rules; this file holds what a linter can't check.
@@ -6,6 +6,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 ## Tooling
 
 - uv manages the interpreter, the venv and the lock. Commit `uv.lock`; CI and images run `uv sync --frozen`. No pip installs, Poetry, or requirements files.
+- `[tool.uv] required-version` in `pyproject.toml` pins uv exactly, such as `"==0.11.32"`. uv refuses to run at another version, and CI's `setup-uv` installs that one when it's given no `version`.
 - Pin one Python in `.python-version`: the newest release every dependency supports. `requires-python` matches it.
 - Dev tools go in `[dependency-groups] dev`. Extras are only for optional runtime features, like `models`.
 - Build with hatchling.
@@ -31,7 +32,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 
 - Internal records are `@dataclass(frozen=True)`. Make a changed copy with `dataclasses.replace`.
 - Pydantic only where outside data needs validating: request bodies and model output. Past that edge, pass dataclasses or plain values.
-- A closed set of names (states, kinds) is a `StrEnum` whose values are the strings stored in the database.
+- A closed set of names (states, kinds) that code compares, branches on, or parses from outside (a request, a CLI argument, model output) is a `StrEnum` whose values are the strings stored in the database, and a test asserts they're exactly the column's `CHECK` list. Names that only pass through SQL stay in the SQL.
 - SQL is plain and parameterized, through the stdlib's `sqlite3` or psycopg 3. Raw SQL by default. An ORM or query builder needs an ADR in `docs/stack.md`; the ADR covers its migration tool too (e.g. alembic), and the numbered `NNN_name.sql` rule doesn't apply to that repo.
 - Schema changes are numbered `NNN_name.sql` files, each applied once in its own transaction and never edited after it ships.
 

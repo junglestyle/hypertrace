@@ -1,4 +1,4 @@
-<!-- junglestyle/.github code-standards/sql.md at b67e538f4a83e8ee7f11716801f1c3d0819be19d. Change it there, then run make sync-standards. -->
+<!-- junglestyle/.github code-standards/sql.md at b3d3bb1eb1b997100738fb5bb9dd2a2b9f45a9d4. Change it there, then run make sync-standards. -->
 # SQL standards
 
 Decisions for SQL and the databases that hold it, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md). In Python, [python.md](https://github.com/junglestyle/.github/blob/main/code-standards/python.md) also covers SQL: parameterized queries through `sqlite3` or psycopg 3, numbered `NNN_name.sql` migrations, and a scratch database for each test run.
@@ -13,7 +13,7 @@ Decisions for SQL and the databases that hold it, beneath the org [standards](ht
 ## Schema
 
 - Names are snake_case, and table names are plural nouns.
-- A column that holds a closed set of names has a `CHECK` that lists them. In Python, they're the values of the column's `StrEnum`.
+- A column that holds a closed set of names has a `CHECK` that lists them. The `CHECK` is the set's list: any other copy, such as a Python `StrEnum`, is tested against it. A repo that writes another repo's column relies on that repo's `CHECK`, not a copy of it.
 
 ## Postgres
 
